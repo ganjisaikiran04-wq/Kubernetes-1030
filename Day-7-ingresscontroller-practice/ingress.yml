@@ -34,3 +34,134 @@ spec:
             name: httpd
             port:
               number: 80
+
+
+##below code wiouth acm and with https
+# apiVersion: cert-manager.io/v1
+# kind: ClusterIssuer
+# metadata:
+#   name: letsencrypt-prod
+# spec:
+#   acme:
+#     email: YOUR_EMAIL@example.com
+#     server: https://acme-v02.api.letsencrypt.org/directory
+#     privateKeySecretRef:
+#       name: letsencrypt-prod
+#     solvers:
+#       - http01:
+#           ingress:
+#             ingressClassName: nginx
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: nginx
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: nginx
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx
+#     spec:
+#       containers:
+#         - name: nginx
+#           image: nginx:latest
+#           ports:
+#             - containerPort: 80
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nginx
+# spec:
+#   selector:
+#     app: nginx
+#   ports:
+#     - port: 80
+#       targetPort: 80
+#   type: ClusterIP
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: httpd
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: httpd
+#   template:
+#     metadata:
+#       labels:
+#         app: httpd
+#     spec:
+#       containers:
+#         - name: httpd
+#           image: httpd:latest
+#           ports:
+#             - containerPort: 80
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: httpd
+# spec:
+#   selector:
+#     app: httpd
+#   ports:
+#     - port: 80
+#       targetPort: 80
+#   type: ClusterIP
+
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: k8s-ingress
+#   annotations:
+#     cert-manager.io/cluster-issuer: letsencrypt-prod
+#     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+#     nginx.ingress.kubernetes.io/use-regex: "true"
+#     nginx.ingress.kubernetes.io/rewrite-target: /$2
+# spec:
+#   ingressClassName: nginx
+
+#   tls:
+#     - hosts:
+#         - gskonline.in
+#       secretName: gskonline-tls
+
+#   rules:
+#     - host: gskonline.in
+#       http:
+#         paths:
+#           - path: /nginx(/|$)(.*)
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: nginx
+#                 port:
+#                   number: 80
+
+#           - path: /httpd(/|$)(.*)
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: httpd
+#                 port:
+#                   number: 80
+
+#           - path: /()(.*)
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: nginx
+#                 port:
+#                   number: 80
