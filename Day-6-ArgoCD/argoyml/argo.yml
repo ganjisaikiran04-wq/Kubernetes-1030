@@ -3,22 +3,23 @@ kind: Application
 metadata:
   name: myapp-argo-application
   namespace: argocd
+
 spec:
   project: default
 
   source:
     repoURL: https://github.com/ganjisaikiran04-wq/Kubernetes-1030.git
-    targetRevision: HEAD
+    targetRevision: main
     path: Day-6-ArgoCD/argomanifest
 
-  destination: 
+  destination:
     server: https://kubernetes.default.svc
     namespace: myapp
 
   syncPolicy:
-    syncOptions:
-    - CreateNamespace=true
-
     automated:
-      selfHeal: true
       prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
