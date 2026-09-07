@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/ganjisaikiran04-wq/Kubernetes-1030.git
     targetRevision: HEAD
-    path: Day-5-Argocd/argoyml
+    path: Day-5-Argocd
   destination: 
     server: https://kubernetes.default.svc
     namespace: myapp
