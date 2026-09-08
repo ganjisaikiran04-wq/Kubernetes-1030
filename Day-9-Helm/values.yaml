@@ -5,7 +5,7 @@
 replicaCount: 2
 
 image:
-  repository: veeranarni/hotstar
+  repository: ganjisaikiran04/hotstar
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
