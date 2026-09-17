@@ -1,6 +1,4 @@
 Flask
-flask-cors
+Flask-Cors
 mysql-connector-python
-redis
-cryptography
-pymysql
+boto3
