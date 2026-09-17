@@ -1,7 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: flask-backend
+
 spec:
   replicas: 2
 
@@ -20,20 +22,27 @@ spec:
       containers:
         - name: flask-backend
 
-          image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/flask-backend:v1
+          image: 250368537874.dkr.ecr.us-east-1.amazonaws.com/flask-backend:v1
 
           ports:
             - containerPort: 5000
+              protocol: TCP
 
           env:
             - name: AWS_REGION
               value: "us-east-1"
 
-            - name: DB_HOST
-              value: "database-1.ckhkeogg21ln.us-east-1.rds.amazonaws.com"
-
             - name: SECRET_NAME
-              value: "rds!db-ac74596e-50e0-4120-8858-461f7beef0fe"
+              value: "rds!db-bafb2a82-2aea-4936-b5b0-eb4930d41318"
+
+            - name: DB_HOST
+              value: "database-1.cu9eqo0c4f5w.us-east-1.rds.amazonaws.com"
+
+            - name: DB_PORT
+              value: "3306"
+
+            - name: DB_NAME
+              value: "dev"
 
           resources:
             requests:
